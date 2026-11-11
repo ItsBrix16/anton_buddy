@@ -1,0 +1,26 @@
+LÖSUNGS-BUDDY FÜR ANTON  ·  Version 2.0.0
+==========================================
+
+INSTALLIEREN (Chrome, Edge, Brave – einmalig, 1 Minute)
+
+  1. Diese ZIP-Datei entpacken. Den Ordner "anton-buddy" an einen festen
+     Platz legen (z. B. Dokumente). Er darf danach nicht gelöscht werden.
+  2. Im Browser diese Adresse öffnen:   chrome://extensions
+  3. Oben rechts "Entwicklermodus" einschalten.
+  4. Auf "Entpackte Erweiterung laden" klicken und den Ordner
+     "anton-buddy" auswählen (der Ordner, in dem manifest.json liegt).
+  5. Die Anleitung öffnet sich von selbst. Fertig.
+
+BENUTZEN
+
+  anton.app öffnen, Übung starten. Die richtige Antwort ist grün markiert,
+  unten rechts liegt die Leiste mit allen Lösungen. Alt + L blendet alles
+  aus und wieder ein. War die Übung schon offen: Seite einmal neu laden.
+
+KI (freiwillig)
+
+  Symbol der Erweiterung anklicken > "KI-Installer" > "Installieren".
+  Das Modell wird einmal von huggingface.co geladen und läuft danach im
+  Browser. Es wird nur gefragt, wenn keine Übungsdaten gefunden wurden.
+
+Kein offizielles ANTON-Produkt.

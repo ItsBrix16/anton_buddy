@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Lösungs-Buddy</title>
+<link rel="stylesheet" href="ui.css">
+<style>
+body{width:372px}
+header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+header h1{font-size:18px;flex:1}
+header small{display:block;font-weight:400;color:var(--mut);font-size:13px}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tab{flex:1;border:0;background:#FAFAFA;padding:10px 6px;cursor:pointer;color:var(--mut);border-bottom:2px solid transparent}
+.tab[aria-selected=true]{background:#fff;color:var(--blue-d);font-weight:600;border-bottom-color:var(--blue)}
+section{padding:12px 14px 14px;display:none}
+section.on{display:block}
+.status{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--grey-l);margin-bottom:6px}
+.status.ok{background:var(--green-bg)}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:#9E9E9E;margin-top:6px}
+.status.ok .dot{background:var(--green)}
+.status b{display:block}
+.row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.row:last-of-type{border-bottom:0}
+.row div{flex:1;min-width:0}
+.row b{font-weight:600;display:block}
+.row span{color:var(--mut);font-size:14px}
+.note{background:#E3F2FD;border-left:3px solid var(--blue);padding:9px 11px;font-size:14.5px;margin-bottom:10px}
+.model{border:1px solid var(--grey);padding:10px 12px;margin-bottom:8px}
+.model.cur{border-color:var(--green);box-shadow:inset 3px 0 0 var(--green)}
+.model .top{display:flex;align-items:center;gap:10px}
+.model .top div{flex:1;min-width:0}
+.model b{font-weight:600}
+.model .meta{color:var(--mut);font-size:13.5px}
+.bar{height:6px;background:var(--grey);margin-top:8px;display:none}
+.bar i{display:block;height:100%;width:0;background:var(--blue);transition:width .2s}
+.model.busy .bar{display:block}
+.msg{font-size:13.5px;color:var(--mut);margin-top:6px;min-height:0}
+.msg.err{color:#C62828}
+details{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;color:var(--blue-d);padding:4px 0}
+label.f{display:block;font-size:14px;color:var(--mut);margin-top:8px}
+input[type=text]{width:100%;font:inherit;padding:7px 9px;border:1px solid #BDBDBD;margin-top:3px}
+.acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+ul{margin:6px 0 0;padding-left:18px}
+li{margin:4px 0}
+kbd{font:inherit;background:var(--grey-l);border:1px solid var(--grey);padding:0 5px}
+</style>
+</head>
+<body>
+<header>
+  <div class="face"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="1.3" fill="#fff" stroke="none"/><circle cx="16" cy="8" r="1.3" fill="#fff" stroke="none"/><path d="M5.5 13.5l4.2 4.2L18.8 11"/></svg></div>
+  <h1>Lösungs-Buddy<small id="onoff">ist an</small></h1>
+  <label class="sw" title="Ein / Aus"><input type="checkbox" id="enabled" aria-label="Lösungs-Buddy ein oder aus"><i></i></label>
+</header>
+<div class="tabs" role="tablist">
+  <button class="tab" role="tab" data-tab="start" aria-selected="true">Start</button>
+  <button class="tab" role="tab" data-tab="ki" aria-selected="false">KI-Installer</button>
+  <button class="tab" role="tab" data-tab="hilfe" aria-selected="false">Hilfe</button>
+</div>
+
+<section id="start" class="on">
+  <div class="status" id="status"><span class="dot"></span><div><b id="st1">Prüfe …</b><span class="small mut" id="st2"></span></div></div>
+  <div class="acts" id="openWrap" style="margin:0 0 4px;display:none"><a class="btn pri" href="https://anton.app/" target="_blank" rel="noopener">ANTON öffnen</a></div>
+  <div class="row"><div><b>Markierungen</b><span>Richtige Antwort grün an der Aufgabe</span></div><label class="sw"><input type="checkbox" id="marks" aria-label="Markierungen"><i></i></label></div>
+  <div class="row"><div><b>Lösungs-Fenster</b><span>Kleine Leiste unten rechts mit allen Lösungen</span></div><label class="sw"><input type="checkbox" id="panel" aria-label="Lösungs-Fenster"><i></i></label></div>
+  <div class="row"><div><b>Spoiler-Schutz</b><span>Lösung erst nach Klick auf „Zeigen“</span></div><label class="sw"><input type="checkbox" id="reveal" aria-label="Spoiler-Schutz"><i></i></label></div>
+  <p class="small mut" style="margin-top:8px"><kbd>Alt</kbd> + <kbd>L</kbd> blendet auf der Seite alles sofort aus und wieder ein.</p>
+</section>
+
+<section id="ki">
+  <div class="note"><b>Du brauchst keine KI.</b> Die Lösungen stehen in den Übungsdaten, die ANTON selbst lädt – sie sind sofort da und stimmen. Ein KI-Modell ist nur die Notlösung, falls einmal keine Daten gefunden werden.</div>
+  <div id="models"></div>
+  <div class="row" style="border-top:1px solid var(--line)"><div><b>Automatisch fragen</b><span>Nur wenn keine Lösungsdaten da sind</span></div><label class="sw"><input type="checkbox" id="aiAuto" aria-label="KI automatisch fragen"><i></i></label></div>
+  <details id="srv">
+    <summary>Eigener Server (llama.cpp, Ollama, LM Studio)</summary>
+    <label class="f">Adresse<input type="text" id="serverUrl" placeholder="http://127.0.0.1:8080"></label>
+    <label class="f">Modellname<input type="text" id="serverModel" placeholder="local-model"></label>
+    <div class="acts"><button class="btn pri" id="srvUse">Server benutzen</button><button class="btn" id="srvTest">Testen</button></div>
+    <div class="msg" id="srvMsg"></div>
+  </details>
+</section>
+
+<section id="hilfe">
+  <div class="acts" style="margin-top:0"><button class="btn pri" id="tut">Anleitung öffnen</button></div>
+  <ul class="small">
+    <li><b>Nichts zu sehen?</b> Übung in ANTON neu starten oder die Seite neu laden – die Lösungen werden beim Laden der Übung gelesen.</li>
+    <li><b>Grün</b> = Lösung aus den Übungsdaten. <b>Orange</b> = KI-Tipp, kann falsch sein.</li>
+    <li><b>Farbige Buchstaben/Zahlen</b> zeigen, was zusammengehört oder in welcher Reihenfolge.</li>
+    <li>Bild- und Zeichenaufgaben haben keine Text-Lösung.</li>
+  </ul>
+  <p class="small mut" style="margin-top:10px">Kein offizielles ANTON-Produkt. Version <span id="ver"></span></p>
+</section>
+<script type="module" src="src/popup.js"></script>
+</body>
+</html>
